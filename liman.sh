@@ -1,5 +1,21 @@
 #!/bin/bash
 
+ # Berke Erçetin  (Dec 15th, 2023) 
+ # 200707059
+ # Atatürk University Computer Engineering 
+ 
+ # Welcome session
+ echo " "
+ echo " " 
+ echo "    _____              .___               .__  __  .__      __________              __            ___________                     __  .__         "
+ echo "   /     \ _____     __| _/____   __  _  _|__|/  |_|  |__   \______   \ ___________|  | __ ____   \_   _____/______   ____  _____/  |_|__| ____   "
+ echo "  /  \ /  \\__  \   / __ |/ __ \  \ \/ \/ /  \   __\  |  \   |    |  _// __ \_  __ \  |/ // __ \   |    __)_\_  __ \_/ ___\/ __ \   __\  |/    \  "
+ echo " /    Y    \/ __ \_/ /_/ \  ___/   \     /|  ||  | |   Y  \  |    |   \  ___/|  | \/    <\  ___/   |        \|  | \/\  \__\  ___/|  | |  |   |  \ "
+ echo " \____|__  (____  /\____ |\___  >   \/\_/ |__||__| |___|  /  |______  /\___  >__|  |__|_ \\___  > /_______  /|__|    \___  >___  >__| |__|___|  / "
+ echo "         \/     \/      \/    \/                        \/          \/     \/           \/    \/          \/             \/    \/             \/  "
+ echo " "
+ echo " " 
+
 # Yardım mesajı
 display_help() {
   echo "Kullanım: ./liman.sh <kur, kaldır, administrator, reset<mail>, help>"
@@ -11,6 +27,8 @@ display_help() {
   echo " Administrator komutu ile birlikte Liman MYS 2.0 için admin hesabı yaratılır."
   echo " Reset işlemi için: ./liman.sh reset <mail>"
   echo " Reset komutu ile birlikte Liman MYS 2.0 için verilen hesap resetlenir."
+  echo " Liman MYS 2.0 servislerinin durumu için: ./liman.sh health"
+  echo " Health komutu ile birlikte Liman MYS 2.0 servislerinin durumu kontrol edilir."
 }
 
 # Argüman sayısını kontrol et
@@ -22,7 +40,7 @@ fi
 
 # Argüman biçimini kontrol et
 case "$1" in
-  "kur"|"kaldır"|"administrator"|"help")
+  "kur"|"kaldır"|"administrator"|"help"| "health")
     # İstenilen argümanlardan biri, devam et
     ;;
   "reset")
@@ -73,7 +91,7 @@ echo " "
 echo " Liman MYS 2.0 kuruluyor..."
 sudo apt update
 wget https://github.com/limanmys/core/releases/download/release.feature-new-ui.863/liman-2.0-RC2-863.deb
-apt install ./liman-2.0-RC2-863.deb
+sudo apt install ./liman-2.0-RC2-863.deb
 echo " Liman MYS 2.0 kuruldu..."
 echo " "
 echo " Liman MYS 2.0 kurulumu tamamlandı..."
@@ -82,24 +100,32 @@ echo " Hoşçakalın..."
     ;;
   "kaldır")
     echo "Kaldırma işlemleri yapılıyor..."
-    apt remove liman
+    sudo apt remove liman
     echo "Kaldırma işlemleri tamamlandı..."
     echo  "Kalıntılar temizleniyor..."
-    apt purge liman
+   sudo apt purge liman
     echo "Kalıntılar temizlendi..."
     ;;
   "administrator")
     echo "Administrator hesabı yaratılıyor..."
-    limanctl administrator
+  sudo  limanctl administrator
     ;;
   "reset")
     echo "Reset işlemi için mail: $2"
-    limanctl reset administrator@liman.dev
+   sudo limanctl reset administrator@liman.dev
+    ;;
+  "health")
+    echo "Limana ait servislerin durumu kontrol ediliyor..."
+    cd /
+    sudo systemctl status liman-*
     ;;
   "help")
     display_help
     ;;
 esac
 
+echo ""
+echo "Goodbye! Don't forget Linus Torvalds and HAVELSAN :)"
+echo ""
 # Script başarıyla tamamlandı
 exit 0
