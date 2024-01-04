@@ -1,6 +1,6 @@
 #!/bin/bash
 
- # Berke Erçetin  (Dec 15th, 2023) 
+ # Berke Erçetin  (Jan 4th, 2024) 
  # 200707059
  # Atatürk University Computer Engineering 
  
