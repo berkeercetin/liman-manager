@@ -31,42 +31,7 @@ display_help() {
   echo " Health komutu ile birlikte Liman MYS 2.0 servislerinin durumu kontrol edilir."
 }
 
-# Argüman sayısını kontrol et
-if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]; then
-  echo "Hatalı argüman sayısı!"
-  display_help
-  exit 1
-fi
-
-# Argüman biçimini kontrol et
-case "$1" in
-  "kur"|"kaldır"|"administrator"|"help"| "health")
-    # İstenilen argümanlardan biri, devam et
-    ;;
-  "reset")
-    # reset için ek kontrol (mail parametresi var mı?)
-    if [ "$#" -ne 2 ]; then
-      echo "Hatalı argüman sayısı reset komutu için!"
-      display_help
-      exit 1
-    fi
-    ;;
-  *)
-    # Geçersiz argüman, hata mesajını göster ve yardımı görüntüle
-    echo "Geçersiz argüman: $1"
-    display_help
-    exit 1
-    ;;
-esac
-echo "Kurulum için sudo yetkileri alınıyor..."
-sudo -v || { echo "Sudo yetkileri alınamadı! Çıkılıyor..."; exit 1; }
-
-# Geri kalan script işlemleri buraya eklenir
-# ...
-
-# Örnek: Argümanlara göre farklı işlemler yapabilirsiniz
-case "$1" in
-  "kur")
+install() {
 echo "Kurulum işlemleri yapılıyor..."
 echo "Güncel Node.js sürümü kuruluyor..."
 NODE_MAJOR=18
@@ -97,27 +62,77 @@ echo " "
 echo " Liman MYS 2.0 kurulumu tamamlandı..."
 echo "Admin hesabınız için ./liman.sh administrator komutunu kullanabilirsiniz."
 echo " Hoşçakalın..."
-    ;;
-  "kaldır")
+}
+
+kaldır () {
     echo "Kaldırma işlemleri yapılıyor..."
     sudo apt remove liman
     echo "Kaldırma işlemleri tamamlandı..."
     echo  "Kalıntılar temizleniyor..."
-   sudo apt purge liman
+    sudo apt purge liman
     echo "Kalıntılar temizlendi..."
-    ;;
-  "administrator")
+}
+
+administrator(){
     echo "Administrator hesabı yaratılıyor..."
-  sudo  limanctl administrator
-    ;;
-  "reset")
+    sudo  limanctl administrator
+}
+
+reset(){
     echo "Reset işlemi için mail: $2"
-   sudo limanctl reset administrator@liman.dev
-    ;;
-  "health")
-    echo "Limana ait servislerin durumu kontrol ediliyor..."
+    sudo limanctl reset administrator@liman.dev
+}
+
+health(){
+    echo "Liman MYS 2.0 servislerinin durumu kontrol ediliyor..."
     cd /
     sudo systemctl status liman-*
+}
+
+
+if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]; then
+  echo "Hatalı argüman sayısı!"
+  display_help
+  exit 1
+fi
+
+case "$1" in
+  "kur"|"kaldır"|"administrator"|"health"|"help")
+    ;;
+  "reset")
+    if [ "$#" -ne 2 ]; then
+      echo "Hatalı argüman sayısı reset komutu için!"
+      display_help
+      exit 1
+    fi
+    ;;
+  *)
+    echo "Geçersiz argüman: $1"
+    display_help
+    exit 1
+    ;;
+esac
+
+echo "Kurulum için sudo yetkileri alınıyor..."
+sudo -v || { echo "Sudo yetkileri alınamadı! Çıkılıyor..."; exit 1; }
+
+
+
+case "$1" in
+  "kur")
+    install
+    ;;
+  "kaldır")
+    kaldır
+    ;;
+  "administrator")
+    administrator
+    ;;
+  "reset")
+    reset
+    ;;
+  "health")
+    health
     ;;
   "help")
     display_help
