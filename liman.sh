@@ -85,7 +85,7 @@ reset(){
 
 health(){
     echo "Liman MYS 2.0 servislerinin durumu kontrol ediliyor..."
-    cd /
+    sudo cd /
     sudo systemctl status liman-*
 }
 
