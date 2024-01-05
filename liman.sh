@@ -80,7 +80,8 @@ administrator(){
 
 reset(){
     echo "Reset işlemi için mail: $2"
-    sudo limanctl reset $2
+    sudo limanctl reset "$2"
+}
 
 health(){
     echo "Liman MYS 2.0 servislerinin durumu kontrol ediliyor..."
