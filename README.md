@@ -1,6 +1,6 @@
 # Term Project
 
-This project is a script developed to manage Liman MYS 2.0.
+This project was developed the Liman MYS 2.0 tool as a term project of the Open source software development course.
 
 ## Installation
 Download this code: 
