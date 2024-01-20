@@ -1,0 +1,5 @@
+Package: liman-manager
+Version: 1.0
+Architecture: all
+Maintainer: Berke Erçetin <berkeercetin@gmail.com>
+Description: A tool to manage Liman MYS    
